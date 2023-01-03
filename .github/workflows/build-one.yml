@@ -105,7 +105,15 @@ jobs:
           if [[ '${{ inputs.folder }}' != '.' ]]; then
             TAG=${TAG}-${{ inputs.tag }}
           fi
-          if [[ '${{ inputs.folder }}' == 'with-chromedriver' ]]; then
+          FULL_TAG=${TAG}
+          if [[ '${{ inputs.folder }}' == 'with-node' ]]; then
+            CURRENT_NODE_VERSION=$(docker container run --rm --entrypoint "" ${IMAGE_NAME} node --version)
+            FULL_TAG=${TAG}-${CURRENT_NODE_VERSION%%.*}
+          elif [[ '${{ inputs.folder }}' == 'with-deno' ]]; then
+            CURRENT_DENO_VERSION=$(docker container run --rm --entrypoint "" ${IMAGE_NAME} deno --version | head -1)
+            CURRENT_DENO_VERSION=${CURRENT_DENO_VERSION:4}
+            FULL_TAG=${TAG}-${CURRENT_DENO_VERSION%%.*}
+          elif [[ '${{ inputs.folder }}' == 'with-chromedriver' ]]; then
             CURRENT_CHROMEDRIVER_VERSION=$(docker container run --rm --entrypoint "" ${IMAGE_NAME} chromedriver --version)
             if [[ ${CURRENT_CHROMEDRIVER_VERSION} =~ ${CHROMEDRIVER_VERSION_REGEXP} ]]; then
               CHROMEDRIVER_MAJOR_VERSION=${BASH_REMATCH[1]}
@@ -116,9 +124,10 @@ jobs:
             fi
           elif [[ '${{ inputs.folder }}' == 'with-selenoid' ]]; then
             CURRENT_SELENOID_VERSION=$(docker container run --rm --entrypoint "" ${IMAGE_NAME} selenoid -version)
-            TAG=${TAG}-${CURRENT_SELENOID_VERSION:14:4}
+            FULL_TAG=${TAG}-${CURRENT_SELENOID_VERSION:14:4}
           fi
-          echo "value=${TAG}" >> $GITHUB_OUTPUT
+          echo "simple=${TAG}" >> $GITHUB_OUTPUT
+          echo "full=${FULL_TAG}" >> $GITHUB_OUTPUT
 
       - name: Login to DockerHub
         if: ${{ github.ref == 'refs/heads/master' }}
@@ -170,6 +179,7 @@ jobs:
         env:
           IMAGE_NAME: ${{ env.IMAGE_REPOSITORY }}:${{ inputs.tag }}
           IMAGE_VERSIONED_NAME: ${{ env.IMAGE_REPOSITORY }}:${{ steps.tag.outputs.value }}
+          IMAGE_FULLY_VERSIONED_NAME: ${{ env.IMAGE_REPOSITORY }}:${{ steps.tag.outputs.full }}
         uses: docker/build-push-action@v5
         with:
           context: ${{ inputs.folder }}
@@ -178,16 +188,22 @@ jobs:
           tags: |
             zenika/${{ env.IMAGE_NAME }}
             zenika/${{ env.IMAGE_VERSIONED_NAME }}
+            zenika/${{ env.IMAGE_FULLY_VERSIONED_NAME }}
             ghcr.io/zenika/${{ env.IMAGE_NAME }}
             ghcr.io/zenika/${{ env.IMAGE_VERSIONED_NAME }}
+            ghcr.io/zenika/${{ env.IMAGE_FULLY_VERSIONED_NAME }}
             us-docker.pkg.dev/zenika-hub/gcr.io/${{ env.IMAGE_NAME }}
             us-docker.pkg.dev/zenika-hub/gcr.io/${{ env.IMAGE_VERSIONED_NAME }}
+            us-docker.pkg.dev/zenika-hub/gcr.io/${{ env.IMAGE_FULLY_VERSIONED_NAME }}
             us-docker.pkg.dev/zenika-hub/us.gcr.io/${{ env.IMAGE_NAME }}
             us-docker.pkg.dev/zenika-hub/us.gcr.io/${{ env.IMAGE_VERSIONED_NAME }}
+            us-docker.pkg.dev/zenika-hub/us.gcr.io/${{ env.IMAGE_FULLY_VERSIONED_NAME }}
             europe-docker.pkg.dev/zenika-hub/eu.gcr.io/${{ env.IMAGE_NAME }}
             europe-docker.pkg.dev/zenika-hub/eu.gcr.io/${{ env.IMAGE_VERSIONED_NAME }}
+            europe-docker.pkg.dev/zenika-hub/eu.gcr.io/${{ env.IMAGE_FULLY_VERSIONED_NAME }}
             asia-docker.pkg.dev/zenika-hub/asia.gcr.io/${{ env.IMAGE_NAME }}
             asia-docker.pkg.dev/zenika-hub/asia.gcr.io/${{ env.IMAGE_VERSIONED_NAME }}
+            asia-docker.pkg.dev/zenika-hub/asia.gcr.io/${{ env.IMAGE_FULLY_VERSIONED_NAME }}
           push: true
           cache-from: type=gha
           cache-to: type=gha

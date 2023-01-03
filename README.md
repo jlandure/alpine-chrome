@@ -17,15 +17,16 @@ Following the changes with the [Rate Limiting on Docker Hub](https://www.docker.
 
 # Supported tags and respective `Dockerfile` links
 
-- `latest`, `100` [(Dockerfile)](https://github.com/Zenika/alpine-chrome/blob/master/Dockerfile)
-- `with-node`, `100-with-node`, `100-with-node-16` [(Dockerfile)](https://github.com/Zenika/alpine-chrome/blob/master/with-node/Dockerfile)
-- `with-puppeteer`, `100-with-puppeteer` [(Dockerfile)](https://github.com/Zenika/alpine-chrome/blob/master/with-puppeteer/Dockerfile)
-- `with-playwright`, `100-with-playwright` [(Dockerfile)](https://github.com/Zenika/alpine-chrome/blob/master/with-playwright/Dockerfile)
-- `with-selenoid`, `100-with-selenoid` [(Dockerfile)](https://github.com/Zenika/alpine-chrome/blob/master/with-selenoid/Dockerfile)
-- `with-chromedriver`, `100-with-chromedriver` [(Dockerfile)](https://github.com/Zenika/alpine-chrome/blob/master/with-chromedriver/Dockerfile)
-- `89`, `86`, `85`, `84`, `83`, `81`, `80`, `77`, `76`, `73`, `72`, `71`, `68`, `64`
-- `89-with-node`, `86-with-node`, `85-with-node`, `84-with-node`, `83-with-node`, `81-with-node`, `80-with-node`, `77-with-node`, `76-with-node`
-- `89-with-puppeteer`, `86-with-puppeteer`, `85-with-puppeteer`,`84-with-puppeteer`, `83-with-puppeteer`, `81-with-puppeteer`, `80-with-puppeteer`, `77-with-puppeteer`, `76-with-puppeteer`
+- `latest`, `<chromium-version>` [(Dockerfile)](https://github.com/Zenika/alpine-chrome/blob/master/Dockerfile)
+- `with-node`, `<chromium-version>-with-node`, `<chromium-version>-with-node-<node-version>` [(Dockerfile)](https://github.com/Zenika/alpine-chrome/blob/master/with-node/Dockerfile)
+- `with-deno`, `<chromium-version>-with-deno`, `<chromium-version>-with-deno-<deno-version>` [(Dockerfile)](https://github.com/Zenika/alpine-chrome/blob/master/with-deno/Dockerfile)
+- `with-puppeteer`, `<chromium-version>-with-puppeteer` [(Dockerfile)](https://github.com/Zenika/alpine-chrome/blob/master/with-puppeteer/Dockerfile)
+- `with-puppeteer-xvfb`, `<chromium-version>-with-puppeteer-xvfb` [(Dockerfile)](https://github.com/Zenika/alpine-chrome/blob/master/with-puppeteer-xvfb/Dockerfile)
+- `with-playwright`, `<chromium-version>-with-playwright` [(Dockerfile)](https://github.com/Zenika/alpine-chrome/blob/master/with-playwright/Dockerfile)
+- `with-selenoid`, `<chromium-version>-with-selenoid`, `<chromium-version>-with-selenoid-<selenoid-version>` [(Dockerfile)](https://github.com/Zenika/alpine-chrome/blob/master/with-selenoid/Dockerfile)
+- `with-chromedriver`, `<chromium-version>-with-chromedriver` [(Dockerfile)](https://github.com/Zenika/alpine-chrome/blob/master/with-chromedriver/Dockerfile)
+
+All available tags: see [`zenika/alpine-chrome` tags on DockerHub](https://hub.docker.com/r/zenika/alpine-chrome/tags)
 
 # alpine-chrome
 
